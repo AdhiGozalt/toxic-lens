@@ -1,0 +1,74 @@
+[
+  {
+    "text": "Dasar BODOH, kamu tidak berguna!!!",
+    "tokens": [
+      "dasar",
+      "bodoh",
+      "kamu",
+      "tidak",
+      "berguna"
+    ],
+    "logit": 3.6765,
+    "probability": 0.9753
+  },
+  {
+    "text": "Terima kasih banyak atas bantuannya ya kak",
+    "tokens": [
+      "terima",
+      "kasih",
+      "banyak",
+      "atas",
+      "bantuannya",
+      "ya",
+      "kakak"
+    ],
+    "logit": -2.0232,
+    "probability": 0.1168
+  },
+  {
+    "text": "gue gak suka sama lo, bangeeet https://contoh.com @teman",
+    "tokens": [
+      "gue",
+      "tidak",
+      "suka",
+      "sama",
+      "kamu",
+      "banget"
+    ],
+    "logit": 2.7345,
+    "probability": 0.939
+  },
+  {
+    "text": "Semoga harimu menyenangkan dan penuh berkah",
+    "tokens": [
+      "semoga",
+      "harimu",
+      "menyenangkan",
+      "dan",
+      "penuh",
+      "berkah"
+    ],
+    "logit": -1.4328,
+    "probability": 0.1927
+  },
+  {
+    "text": "RT @user pemerintah harus lebih peduli pada rakyat kecil",
+    "tokens": [
+      "pemerintah",
+      "harus",
+      "lebih",
+      "peduli",
+      "pada",
+      "rakyat",
+      "kecil"
+    ],
+    "logit": 0.4997,
+    "probability": 0.6224
+  },
+  {
+    "text": "",
+    "tokens": [],
+    "logit": -0.0984,
+    "probability": 0.4754
+  }
+]

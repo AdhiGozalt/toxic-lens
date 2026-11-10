@@ -1,0 +1,31 @@
+{
+  "algorithm": "TF-IDF + Logistic Regression",
+  "params": {
+    "C": 4,
+    "max_features": 10000,
+    "ngram_max": 2
+  },
+  "sizes": {
+    "source": 13169,
+    "unique": 12821,
+    "development": 10897,
+    "test": 1924,
+    "features": 10000,
+    "slang": 14531
+  },
+  "toxicShare": 0.5559,
+  "majorityBaseline": 0.5556,
+  "test": {
+    "accuracy": 0.8888,
+    "precision": 0.882,
+    "recall": 0.9233,
+    "f1": 0.9022,
+    "rocAuc": 0.9555,
+    "confusion": {
+      "tn": 723,
+      "fp": 132,
+      "fn": 82,
+      "tp": 987
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "toxic-lens",
+  "version": "1.0.0",
+  "description": "A dashboard that shows every step from an Indonesian comment to its toxicity score, entirely in the browser.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test",
+    "start": "npx --yes serve@14.2.4 -l 4174 ."
+  }
+}

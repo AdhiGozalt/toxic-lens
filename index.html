@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Toxic Lens: see how a toxicity score is made</title>
+  <meta name="description" content="Paste an Indonesian comment and follow every step from raw text to final toxicity score. Runs entirely in your browser." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231e1b4b'/%3E%3Ccircle cx='14' cy='14' r='7' fill='none' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M19 19l7 7' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top">
+    <span class="brand">Toxic Lens</span>
+    <a class="quiet" href="https://github.com/AdhiGozalt/toxic-lens" target="_blank" rel="noopener">Source on GitHub ↗</a>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Don't just get a score. See how it was&nbsp;made.</h1>
+      <p class="lead">Paste an Indonesian comment and follow every step from raw text to final toxicity score. Nothing you type leaves this browser.</p>
+    </section>
+
+    <section class="composer">
+      <div class="input-side">
+        <label for="text">Comment in Indonesian</label>
+        <textarea id="text" rows="4" maxlength="2000" placeholder="Tulis komentar di sini…" disabled></textarea>
+        <div class="examples"><span>Try:</span><span id="examples"></span></div>
+        <p id="status" class="meta" role="status">Loading the model…</p>
+      </div>
+      <div id="summary" class="summary" aria-live="polite">
+        <p class="label">Final score</p>
+        <p class="big"><span id="final">–</span></p>
+        <p id="verdict" class="verdict">Waiting for text</p>
+        <p id="delta" class="meta"></p>
+      </div>
+    </section>
+
+    <p id="pill" class="pill" hidden></p>
+
+    <ol id="steps" class="steps" hidden>
+      <li class="step">
+        <h2>Clean the text</h2>
+        <p class="note">Lowercase, then remove links, mentions, punctuation and stretched letters.</p>
+        <div class="compare"><p class="label">Before</p><p id="raw" class="text"></p><p class="label">After</p><p id="cleaned" class="text"></p></div>
+      </li>
+      <li class="step">
+        <h2>Translate slang</h2>
+        <p class="note">Informal spellings become standard words, so the model sees "tidak" whether someone typed "gak" or "ga".</p>
+        <div id="changes" class="chips"></div>
+      </li>
+      <li class="step">
+        <h2>Split into words</h2>
+        <p class="note">Click a word to remove it and watch the whole calculation change.</p>
+        <div id="tokens" class="chips"></div>
+        <button id="reset" class="link-button" type="button" hidden>Restore all words</button>
+      </li>
+      <li class="step">
+        <h2>Look up the vocabulary</h2>
+        <p class="note">Only words and two-word phrases the model learned can affect the score.</p>
+        <p class="lookup"><strong id="known"></strong> <span id="known-note"></span></p>
+        <div id="unknown" class="chips muted"></div>
+      </li>
+      <li class="step">
+        <h2>Weigh each term with TF-IDF</h2>
+        <p class="note">Rare terms count for more. Multiplying each weight by what the model learned gives the term's contribution.</p>
+        <div class="scroll" tabindex="0"><table id="features"></table></div>
+      </li>
+      <li class="step">
+        <h2>See what pushed the score</h2>
+        <div class="legend"><span><i class="swatch up"></i>Raises toxicity</span><span><i class="swatch down"></i>Lowers toxicity</span></div>
+        <div id="bars" class="bars"></div>
+        <p id="bars-note" class="note after"></p>
+      </li>
+      <li class="step">
+        <h2>Compute the final score</h2>
+        <p class="note">The contributions are added to the model's starting point, and the sigmoid function turns that total into a percentage.</p>
+        <div class="calc">
+          <dl>
+            <div><dt>Starting point</dt><dd id="intercept"></dd></div>
+            <div><dt>Sum of contributions</dt><dd id="sum"></dd></div>
+            <div class="total"><dt>Log-odds</dt><dd id="logit"></dd></div>
+            <div class="total"><dt>Sigmoid: 1 / (1 + e<sup>−log-odds</sup>)</dt><dd id="probability"></dd></div>
+          </dl>
+          <svg id="curve" viewBox="0 0 360 170" role="img" aria-label="Sigmoid curve with this comment's position marked"></svg>
+        </div>
+      </li>
+    </ol>
+
+    <section id="report" class="report">
+      <h2>How good is the model?</h2>
+      <p class="note">Measured on comments held back from training. Scores at or above 50% count as toxic here.</p>
+      <div id="tiles" class="tiles"></div>
+      <div class="report-grid">
+        <div>
+          <h3>Test set results</h3>
+          <div class="scroll"><table id="confusion"></table></div>
+        </div>
+        <div>
+          <h3>What to keep in mind</h3>
+          <ul class="caveats">
+            <li>This is a simplified, explainable model. It is not the C-RNN from <a href="https://jaelcorner.com/portfolio/#publication" rel="noopener">the published paper</a>, and it was trained on a different dataset.</li>
+            <li>The tweets are mostly political, so ordinary political language can score too high.</li>
+            <li>It reads words, not intent. Sarcasm, quotation and context are invisible to it.</li>
+            <li>Use it to learn how text classification works, not to judge or moderate real people.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="meta cite">Data: Ibrohim &amp; Budi (2019), <a href="https://github.com/okkyibrohim/id-multi-label-hate-speech-and-abusive-language-detection" target="_blank" rel="noopener">Multi-label Hate Speech and Abusive Language Detection in Indonesian Twitter</a>, CC BY-NC-SA 4.0.</p>
+    </section>
+  </main>
+
+  <footer class="foot">Built by <a href="https://jaelcorner.com/portfolio/" rel="noopener">Muhammad Adhi Gozalt</a> · No uploads, no tracking.</footer>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
